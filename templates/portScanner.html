@@ -1,0 +1,56 @@
+{% extends "index.html" %}
+
+{% block title %} SIP Attack tools {% endblock title %}
+
+{% block main %}
+<div class="row align-items-start">
+    <div class="col">
+        <div class="container-fluid">
+            <label for="">Sip Server</label>
+            <form action="">
+                <label for="">Enter Sever IP address</label>
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="number" name="server_ip" id="server_ip" placeholder="eg: 192.168.31.161">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit">Submit</button>
+                    </div>
+                </div>
+            </form>
+            <div class="row" style="padding-top: 10px;">
+                <div class="col-md-4">
+                    <button>Log Files</button>
+                    <div id="logOutput" style="margin-top: 20px; white-space: pre-wrap; background: #f8f9fa; border: 1px solid #ddd; padding: 10px;">
+                        <!-- Logs will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="container">
+            <label for="">Sip Client</label>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("logButton").addEventListener("click", function () {
+        fetch("{% url 'read_log_file' %}", {
+            method: "GET",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest", // Indicate it's an AJAX request
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const logOutput = document.getElementById("logOutput");
+            logOutput.innerText = data.logs.join("\n"); // Render the logs
+        })
+        .catch(error => {
+            alert("Failed to fetch logs: " + error);
+        });
+    });
+</script>
+{% endblock main %}
