@@ -1,0 +1,53 @@
+<section id="inviteFlood">
+    <h1>Invite Flood</h1>
+    <form action="">
+        <label for="">Interface</label>
+        <input type="text" placeholder="Enter attacking interface">
+        <br>
+        <label for="">Username</label>
+        <input type="text" placeholder="Eneter Victim's username">
+        <br>
+        <label for="">Domain name</label>
+        <input type="text" placeholder="example.local">
+        <br>
+        <label for="">Server IP</label>
+        <input  type="text" 
+            id="server-ip" 
+            name="server-ip" 
+            placeholder="e.g., 192.168.31.161" 
+            pattern="^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" 
+            title="Enter a valid IP address, e.g.: 192.168.31.161" 
+            required>
+        <br>
+        <label for="">No of packets to be sent</label>
+        <input type="number" placeholder="10">
+        <br><br>
+        <button type="submit">Attack</button>
+    </form>
+</section>
+<br><br><br>
+<section id="SIP enum">
+    <h1>SIP Enumeration</h1>
+    <form action="">
+        <label for="sip-username">SIP Username</label>
+        <input 
+            type="text" 
+            id="sip-username" 
+            name="sip-username" 
+            placeholder="Enter SIP username" 
+            pattern="^[a-zA-Z0-9_.-]+$" 
+            title="Username can contain letters, numbers, underscores, dots, and hyphens only" 
+            required>
+        <br>
+        <label for="">SIP Server IP</label>
+        <input  type="text" 
+            id="server-ip" 
+            name="server-ip" 
+            placeholder="e.g., 192.168.31.161" 
+            pattern="^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$" 
+            title="Enter a valid IP address, e.g.: 192.168.31.161" 
+            required>
+        <br><br>
+        <button type="submit">Attack</button>
+    </form>
+</section>
