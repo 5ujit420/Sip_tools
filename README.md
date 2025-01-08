@@ -17,7 +17,8 @@ How to Setup:
 4) Run the following commands:
  pip3 install sipvicious,
  apt install inviteflood,
- apt-get install libnet1-dev
+ apt-get install libnet1-dev,
+ pip install django 
 5) Clone the Sip_tools repository.
 
 
