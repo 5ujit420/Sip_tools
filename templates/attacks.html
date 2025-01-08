@@ -5,37 +5,56 @@
 {% block main %}
 
 <h1>Attack Simulation</h1>
-<nav class="navbar" style="display: flex; gap: 10px;">
+<nav class="navbar" style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
     {% for attack in attacks %}
         <button onclick="loadAttackForm('{{ attack.id }}')">{{ attack.name }}</button>
     {% endfor %}
 </nav>
 
-<div class="form-container" style="margin-top: 20px;">
-    <form id="attack-form" method="POST">
-        {% csrf_token %}
-        <!-- Form fields will be dynamically loaded here -->
-    </form>
-</div>
+<div class="container" style="padding: 0 20px;">
 
-<div id="status-container"></div>
+    <div class="form-container" style="margin-top: 20px;">
+        <form id="attack-form" method="POST">
+            {% csrf_token %}
+            <!-- Form fields will be dynamically loaded here -->
+        </form>
+    </div>
+    
+    <div id="status-container" 
+    style="margin-top: 20px; 
+            margin-bottom: 20px;
+            padding:10px; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+            background-color: #f9f9f9; 
+            min-height: 50px;">
+    </div>
+</div>
 
 <script>
     function loadAttackForm(attackId) {
         console.log("Loading form for attack ID: " + attackId);  // Debug log
-        $.get(`/attackForm/attacks/${attackId}/`, function(response) {
+        $.get(`/attacks/${attackId}/`, function(response) {
             console.log("Response from server:", response);  // Log the response
             const form = $('#attack-form');
             form.empty();  // Clear the form before adding new fields
-    
+        
             if (response.form && response.form.fields) {
                 form.append(`<input type="hidden" name="attackId" value="${attackId}">`);
+                
+                // Apply a wrapper div for better styling
+                const formWrapper = $('<div class="form-wrapper"></div>');
+
                 response.form.fields.forEach(field => {
-                    form.append(`<label>${field.label}</label>`);
-                    form.append(`<input type="${field.type}" name="${field.name}"><br>`);
+                    const fieldWrapper = $('<div class="form-field"></div>');
+                    fieldWrapper.append(`<label for="${field.name}">${field.label}</label>`);
+                    fieldWrapper.append(`<input id="${field.name}" type="${field.type}" name="${field.name}" class="form-input">`);
+                    formWrapper.append(fieldWrapper);
                 });
-    
-                form.append('<button type="submit">Attack</button>');
+
+                // Append the form wrapper and the submit button
+                formWrapper.append('<button type="submit" class="submit-btn">Attack</button>');
+                form.append(formWrapper);
             } else {
                 // If the response is invalid, show an error
                 alert('Failed to load form fields');
@@ -45,6 +64,7 @@
             alert('Failed to load attack form: ' + error);
         });
     }
+
     
 
     $('#attack-form').on('submit', function(event) {
@@ -52,13 +72,18 @@
         const formData = $(this).serialize();
         const attackId = $(this).find('input[name="attackId"]').val(); // Retrieve attackId
 
-        $.post(`/attackForm/attacks/${attackId}/`, formData, function(response) {
+        $.post(`/attacks/${attackId}/`, formData, function(response) {
+            const statusContainer = $('#status-container');
+            statusContainer.empty();
+            
             if (response.success) {
-                $('#status-container').html(`<p>Success: ${response.output}</p>`);
+                $('#status-container').html(`<p style="color: green; font-weight: bold;">Success:</p> <pre>${response.output}</pre>`);
             } else {
-                $('#status-container').html(`<p>Error: ${response.error}</p>`);
+                $('#status-container').html(`<p style="color: red; font-weight: bold;">Error:</p> <pre>${response.error}</pre>`);
             }
         });
+    }).fail(function(xhr, status, error) {
+        $('#status-container').html(`<p style="color: red; font-weight: bold;">Error: ${error}</p>`);
     });
 </script>
 

